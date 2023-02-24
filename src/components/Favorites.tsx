@@ -28,6 +28,13 @@ const Favorites = () => {
     storeActions.setAddToFavorites(val[0]);
   };
 
+  useEffect(() => {
+    const favs = JSON.parse(localStorage.getItem("FavCurrencies")!);
+    favs.forEach((f: string) => {
+      storeActions.setAddToFavorites(f);
+    });
+  }, []);
+
   const renderFavs = favoritesStore?.map((item, index) => {
     const match = ratesStore!.find((r) => r.code === item);
     return (
@@ -80,7 +87,6 @@ const Favorites = () => {
       padding={5}
     >
       <Box width={450} display={"flex"} flexDirection={"column"} gap={3}>
-        <>{renderFavs}</>
         {definitionsStore && (
           <Autocomplete
             sx={{ width: "100%" }}
@@ -95,6 +101,7 @@ const Favorites = () => {
             )}
           />
         )}
+        <>{renderFavs}</>
       </Box>
     </Stack>
   );

@@ -31,7 +31,8 @@ const useStore = create<dataStore>((set, get) => ({
   selectedCurrency: ["btc", "Bitcoin"],
   currencyCode: "btc",
   amountToConvert: 1,
-  favoriteRates: ["usd", "cad", "hkd", "eur", "gbp", "jpy"],
+  favoriteRates: [],
+  // favoriteRates: ["usd", "cad", "hkd", "eur", "gbp"],
   actions: {
     fetchDefinitions: async () => {
       const response = await fetch(
@@ -82,20 +83,22 @@ const useStore = create<dataStore>((set, get) => ({
     },
     setAddToFavorites(_string) {
       const xFav = get().favoriteRates!;
-      let newFavs: string[] | undefined;
-      if (xFav !== null) {
-        newFavs = [...get().favoriteRates!, _string];
-      } else {
-        newFavs = [_string];
+      if (!xFav.includes(_string)) {
+        let newFavs: string[] | undefined;
+        if (xFav !== null) {
+          newFavs = [...get().favoriteRates!, _string];
+        } else {
+          newFavs = [_string];
+        }
+        localStorage.setItem("FavCurrencies", JSON.stringify(newFavs));
+        // console.log(JSON.stringify(newFavs));
+        set((state) => ({ favoriteRates: newFavs }));
       }
-      // window.localStorage.setItem("FavCurrencies", JSON.stringify(newFavs));
-      // console.log(JSON.stringify(newFavs));
-      set((state) => ({ favoriteRates: newFavs }));
     },
     setRemoveFromFavorites(_index) {
       const newFavs = [...get().favoriteRates!];
       newFavs.splice(_index, 1);
-      // window.localStorage.setItem("FavCurrencies", JSON.stringify(newFavs));
+      localStorage.setItem("FavCurrencies", JSON.stringify(newFavs));
       // console.log(JSON.stringify(newFavs));
       set((state) => ({ favoriteRates: newFavs }));
     },

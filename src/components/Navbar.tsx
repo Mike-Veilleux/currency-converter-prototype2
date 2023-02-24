@@ -44,16 +44,6 @@ const Navbar = () => {
       <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
         Currency Converter
       </Typography>
-
-      <TextField
-        label={"Amount"}
-        type={"number"}
-        value={amountToConvertStore}
-        onChange={(e) =>
-          storeActions.setAmountToConvert(parseInt(e.target.value!))
-        }
-      />
-
       {definitionsStore && (
         <Autocomplete
           sx={{ width: 300 }}
@@ -66,14 +56,21 @@ const Navbar = () => {
           renderInput={(params) => <TextField {...params} label="Currencies" />}
         />
       )}
-
+      <TextField
+        label={"Amount"}
+        type={"number"}
+        value={amountToConvertStore}
+        onChange={(e) =>
+          storeActions.setAmountToConvert(parseInt(e.target.value!))
+        }
+      />
       <Button
         variant={"contained"}
         color={"primary"}
         size="large"
         onClick={() => calculateRates()}
       >
-        Calculate
+        Convert
       </Button>
     </Stack>
   );
